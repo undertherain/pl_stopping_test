@@ -41,12 +41,7 @@ class Cosmoflow(pl.LightningModule):
 
 
 def main():
-    # TODO: move this to config
-    path_data = "/groups1/gac50489/datasets/cosmoflow/cosmoUniverse_2019_05_4parE_tf_small"
-    path_data = "/groups1/gac50489/datasets/cosmoflow_full/cosmoUniverse_2019_05_4parE_tf"
-    config = {}  # TODO: load from yaml
-    config["batch_size"] = 2
-    data_module = CFDataModule(path_data, batch_size=config["batch_size"])
+    data_module = CFDataModule(batch_size=2)
     wandb_logger = WandbLogger(project="cosmoflow")
     # wandb_logger.log_hyperparams(config)
     # early_stop_callback = EarlyStopping(
@@ -70,13 +65,8 @@ def main():
     # print("tainer created")
 
     model = Cosmoflow()
-    # print("fit")
     trainer.fit(model, data_module)
 
 
 if __name__ == "__main__":
     main()
-
-# TODO: load all data
-# TODO: implement LR scheduling
-# TODO: log hyper-parameters

@@ -43,22 +43,21 @@ class Cosmoflow(pl.LightningModule):
 def main():
     data_module = CFDataModule(batch_size=2)
     wandb_logger = WandbLogger(project="cosmoflow")
-    # wandb_logger.log_hyperparams(config)
-    # early_stop_callback = EarlyStopping(
-    #     monitor='val_loss',
-    #     min_delta=0.0001,
-    #     patience=5,
-    #     verbose=True,
-    #     mode="min",
-    # )
-    # print("create tainer")
+    early_stop_callback = EarlyStopping(
+        monitor='val_loss',
+        min_delta=0.0001,
+        patience=2,
+        verbose=True,
+        mode="min",
+    )
+    print("create tainer")
     trainer = pl.Trainer(
         gpus=1,
         num_sanity_val_steps=0,
-        max_epochs=100,
+        max_epochs=20,
         distributed_backend="horovod",
         replace_sampler_ddp=False,
-        # early_stop_callback=early_stop_callback,
+        early_stop_callback=early_stop_callback,
         logger=wandb_logger,
         progress_bar_refresh_rate=0,
     )

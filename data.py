@@ -64,7 +64,28 @@ class CFDataModule(pl.LightningDataModule):
         pass
 
     def train_dataloader(self):
-        return load_ds_from_dir(os.path.join(self.path, "train"), self.batch_size)
+        # create identical tensors
+        cnt_samples = 2
+        tensor_x = torch.rand((cnt_samples, 8, 128, 128, 128),
+                              out=None,
+                              dtype=None,
+                              layout=torch.strided,
+                              device=None,
+                              requires_grad=False)
+        tensor_y = torch.ones(cnt_samples)
+        dataset = TensorDataset(tensor_x, tensor_y)
+        return dataset
 
     def val_dataloader(self):
-        return load_ds_from_dir(os.path.join(self.path, "validation"), self.batch_size)
+        # one rank should have different one
+        # create identical tensors
+        cnt_samples = 2
+        tensor_x = torch.rand((cnt_samples, 8, 128, 128, 128),
+                              out=None,
+                              dtype=None,
+                              layout=torch.strided,
+                              device=None,
+                              requires_grad=False)
+        tensor_y = torch.ones(cnt_samples)
+        dataset = TensorDataset(tensor_x, tensor_y)
+        return dataset
